@@ -10,12 +10,16 @@ const sendButton = document.getElementById('send-button')
 const sendRequest = function (method, url, data) {
     const promise = new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest()
-        xhr.responseType = 'json'
         xhr.open(method, url)
+        xhr.responseType = 'json'
+        xhr.setRequestHeader('Content-Type', 'application/json')
         xhr.send(data)
 
         xhr.onload = function () {
             resolve(xhr.response)
+        }
+        xhr.onerror = function () {
+            reject('something is error')
         }
     })
     return promise
@@ -31,16 +35,20 @@ const getData = function () {
 
 const sendData = function () {
     sendRequest(
-        'GET',
+        'POST',
         'https://jsonplaceholder.typicode.com/posts',
         JSON.stringify({
             title: 'foo',
             body: 'bar',
             userId: 1,
         })
-    ).then((responseData) => {
-        console.log(responseData)
-    })
+    )
+        .then((responseData) => {
+            console.log(responseData)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
 }
 
 getButton.addEventListener('click', getData)
