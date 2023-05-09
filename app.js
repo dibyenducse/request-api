@@ -7,16 +7,26 @@
 const getButton = document.getElementById('get-button')
 const sendButton = document.getElementById('send-button')
 
-const sendRequest = function () {}
+const sendRequest = function (method, url) {
+    const promise = new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest()
+        xhr.responseType = 'json'
+        xhr.open(method, url)
+        xhr.send()
+
+        xhr.onload = function () {
+            resolve(xhr.response)
+        }
+    })
+    return promise
+}
 
 const getData = function () {
-    const xhr = new XMLHttpRequest()
-    xhr.open('GET', 'https://jsonplaceholder.typicode.com/todos/1')
-    xhr.send()
-    xhr.onload = function () {
-        const result = xhr.response
-        console.log(JSON.parse(result))
-    }
+    sendRequest('GET', 'https://jsonplaceholder.typicode.com/todos/1').then(
+        (responseData) => {
+            console.log(responseData)
+        }
+    )
 }
 
 const sendData = function () {}
