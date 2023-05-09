@@ -16,7 +16,9 @@ const sendRequest = function (method, url, data) {
         xhr.send(data)
 
         xhr.onload = function () {
-            resolve(xhr.response)
+            if (xhr.status >= 400) {
+                reject(xhr.response)
+            } else resolve(xhr.response)
         }
         xhr.onerror = function () {
             reject('something is error')
